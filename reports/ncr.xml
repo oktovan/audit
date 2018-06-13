@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record id="ncr_pdf" model="ir.actions.report.xml">
+            <field name="name">NCR PDF</field>
+            <field name="type">ir.actions.report.xml</field>
+            <field name="model">audit.temuan</field>
+            <field name="report_name">ncr_pdf</field>
+            <field name="report_type">aeroo</field>
+            <!-- <field name="in_format">genshi-raw</field> -->
+            <field name="in_format">oo-odt</field>
+            <!-- <field name="in_format">oo-ods</field> -->
+            <field name="out_format" ref="report_aeroo.report_mimetypes_pdf_odt"/>
+            <field name="parser_loc">audit/reports/ncr.py</field>
+            <field name="report_rml">audit/reports/NCR.odt</field>
+            <field name="parser_state">loc</field>
+            <field name="tml_source">file</field>
+        </record>    
+    </data>
+</openerp>
+

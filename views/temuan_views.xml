@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+        <!-- SEARCH VIEWS -->
+        <record id="audit_temuan_view_search" model="ir.ui.view">
+            <field name="name">audit.temuan search</field>
+            <field name="model">audit.temuan</field>
+            <field name="arch" type="xml">
+               <search string="Pencarian Temuan">
+                    <field name="nc" string="Ketidaksesuaian"/>
+                    <field name="state" string="State"/>
+                    <filter domain="[('state','=','open')]" string="Open"/>
+                    <filter domain="[('state','=','close')]" string="Closed"/>
+                    <group expand="0" string="Group By">
+                        <filter name="state" string="State" context="{'group_by':'state'}"/>
+                    </group>
+                 </search>
+            </field>
+        </record>
+
+		<!-- WINDOW ACTION -->
+		<record id="audit_temuan_action" model="ir.actions.act_window">
+		    <field name="name">Temuan</field>
+		    <field name="type">ir.actions.act_window</field>
+		    <field name="res_model">audit.temuan</field>
+		    <field name="view_type">form</field>
+		    <field name="view_mode">tree,form,graph,calendar</field>
+		    <field name="search_view_id" ref="audit_temuan_view_search"/>
+		</record>
+
+		<!-- TREE VIEWS -->
+		<record id="audit_temuan_view_tree" model="ir.ui.view">
+		    <field name="name">audit.temuan tree</field>
+		    <field name="model">audit.temuan</field>
+		    <field name="mode">primary</field>
+		    <field name="arch" type="xml">
+		        <tree>
+		            <field name="name"/>
+		            <field name="auditee_ids"/>
+		            <field name="auditor_ids"/>
+		            <field name="klausul_id"/>
+		            <field name="kategori"/>
+		            <field name="state"/>
+                </tree>
+		    </field>
+		</record>
+
+		<!-- CALENDAR VIEWS -->
+        <record id="audit_temuan_view_calendar" model="ir.ui.view">
+            <field name="name">Temuan</field>
+            <field name="model">audit.temuan</field>
+            <field name="arch" type="xml">
+                <calendar string="Tindakan Perbaikan" color="state" date_start="target_perbaikan" date_stop="target_perbaikan">
+                    <field name="name"/>
+                    <field name="pic_perbaikan"/>
+                </calendar>
+            </field>
+        </record>
+
+		<!-- GRAPH VIEWS -->
+        <record id="audit_temuan_view_graph" model="ir.ui.view">
+            <field name="name">audit.temuan graph</field>
+            <field name="model">audit.temuan</field>
+            <field name="arch" type="xml">
+                <graph string="Grafik Temuan" type="pie">
+                    <field name="state"/>
+                </graph>
+            </field>
+        </record>
+
+		<record id="seq_type_nomor_temuan" model="ir.sequence.type">
+        	<field name="name">Nomor Temuan</field>
+        	<field name="code">nomor.temuan</field>
+    	</record>
+ 
+    	<record id="seq_nomor_temuan" model="ir.sequence">
+        	<field name="name">Nomor Temuan</field>
+        	<field name="code">nomor.temuan</field>
+        	<field name="prefix">DN/%(y)s/%(month)s/</field>
+        	<field name="padding">5</field>
+    	</record>
+
+		<!-- FORM VIEWS -->
+		<record id="audit_temuan_view_form" model="ir.ui.view">
+		    <field name="name">audit.temuan form</field>
+		    <field name="model">audit.temuan</field>
+		    <field name="mode">primary</field>
+		    <field name="arch" type="xml">
+		        <form>
+		        	<header>
+		        		<button string="Print NCR" type="action" name="%(audit.ncr_pdf)d"/>
+		        		<button string="Close" type="object" name="button_close" states="open" class="oe_highlight"/>
+		        		<button string="Open" type="object" name="button_open" states="close" class="oe_highlight"/>
+		        		<field name="state" widget="statusbar"/>
+		        	</header>
+		            <group name="group_1" colspan="4" col="2">
+		                <field name="name"/>
+		                <field name="tgl_audit"/>
+		                <field name="auditee_ids"/>
+		                <field name="auditor_ids"/>
+		                <field name="klausul_id"/>
+		                <field name="nc"/>
+		                <field name="kategori"/>
+		                <field name="akar_masalah"/>
+		                <field name="tindakan_perbaikan"/>
+		                <field name="target_perbaikan"/>
+		                <field name="pic_perbaikan"/>
+		                <field name="tindakan_korektif"/>
+		                <field name="target_korektif"/>
+		                <field name="pic_korektif"/>
+                    </group>
+		        </form>
+		    </field>
+		</record>
+	</data>
+</openerp>
