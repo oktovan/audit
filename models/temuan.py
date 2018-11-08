@@ -57,7 +57,7 @@ class AuditTemuan(models.Model):
         string="Good Receipt",
         comodel_name="stock.picking",
     #    domain="[('origin', 'in', koplak)]",
-    #    domain="[('origin', 'in', ['PO00001','PO00002'])]",
+        domain="[('origin', 'in', ['dummies'])]",
     #    relation="rel_temuan_2_picking",
     #    column1="temuan_id",
     #    column2="picking_id",
@@ -157,28 +157,40 @@ class AuditTemuan(models.Model):
         respon='pib999'
         #data=self.env['stock.picking'].search([['origin', '=', 'PO00001']]).name
         #raise UserError(str(data))
-        #raise UserError(self.invoice_ids.origin)        
+        #raise UserError(self.invoice_ids.origin)
+        _error_msg=''        
         for picking_id in self.picking_ids:
             #raise UserError(str(picking_id.name))
             for each_line in picking_id.move_lines:
-                each_line.djbc_custom_document_id.write({'name':"pib999"})
-                raise UserError(str(each_line.djbc_custom_document_id.name))
-                
+                if not each_line.djbc_custom_document_id.name:
+                    _error_msg=_error_msg+'create'+' '
+                    each_line.djbc_custom_document_id.create({'name':"pib999"})
+
+                else:
+                    _error_msg=_error_msg+' '+each_line.djbc_custom_document_id.name+' write'+' '
+                    each_line.djbc_custom_document_id.write({'name':"pib999"})
+                       
+                #raise UserError(str(prev_name+each_line.djbc_custom_document_id.name))
+        raise UserError(_error_msg)        
+
 
         #self.env.cr.execute("update stock.picking set name='tes' where origin='PO00001'") 
         #self.env.cr.commit()
 
 
 
-    #@api.onchange('invoice_ids')
-    #def _onchange_invoice_ids(self):
-    #   domain = {}
-    #   partner_list = []
-    #   if not self.invoice_ids:
-    #       partner_obj = self.env['stock.picking'].search([('customer', '=', True)])
-    #       for partner_ids in partner_obj:
-    #           partner_list.append(partner_ids.id)
-          # to assign parter_list value in domain
-    #       domain = {'partner_id': [('id', '=', partner_list)]} 
-    #   return {'domain': domain}
+    @api.onchange('invoice_ids')
+    def _onchange_invoice_ids(self):
+        domain = {}
+        origin_list = []
+        #if not self.invoice_ids:
+        #    partner_obj = self.env['stock.picking'].search([('customer', '=', True)])
+        for invoice_id in self.invoice_ids :
+            origin_list.append(invoice_id.origin)
+        #to assign parter_list value in domain
+        domain = {'picking_ids': [('origin', 'in', origin_list)]} 
+        #return {'domain': domain}
+        return {'domain': domain}
+        #raise UserError('OK')
+
 
