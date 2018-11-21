@@ -90,6 +90,7 @@
 		        	<header>
 		        		<button name="button_confirm" string="Confirm" class="oe_highlight" type="object"/>
 		        		<button name="get_respon" string="Get Respon" type="object"/>
+		        		<button name="submit_bc23" string="Submit BC23" type="object"/>
 		        		<button string="Print NCR" type="action" name="%(audit.ncr_pdf)d"/>
 		        		<button string="Close" type="object" name="button_close" states="open" class="oe_highlight"/>
 		        		<button string="Open" type="object" name="button_open" states="close" class="oe_highlight"/>
@@ -98,7 +99,7 @@
 		            <group name="group_1" colspan="4" col="2">
 		                <field name="name"/>
 		                <field name="tgl_audit"/>
-		                <field name="invoice_ids"/>
+		                <field name="invoice_ids" widget="many2many" domain="[('temuan_id','=',False)]" options="{'no_create':True}'"/>
 		                <field name="picking_ids"/>
 		                <field name="auditee_ids"/>
 		                <field name="auditor_ids"/>
